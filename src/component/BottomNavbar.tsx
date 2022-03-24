@@ -9,7 +9,7 @@ export default function BottomNavbar() {
   return (
     <nav className="bottomNav">
       <ul>
-        <NavLink exact to="/dashboard">
+        <NavLink exact to="/">
           <li>
             <Icon.Home />
             <p>HOME</p>
