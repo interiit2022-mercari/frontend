@@ -133,7 +133,8 @@ function App() {
           </Route>
         </Switch>
         {auth?.user != null && <BottomNavbar />}
-        <Footer />
+        {/* TODO: decide what to add in footer and uncomment it here */}
+        {/* <Footer /> */}
       </div>
     </Router>
   );
