@@ -1,4 +1,5 @@
 import axios from "axios";
+import fuzzysort from "fuzzysort";
 import React, { useEffect, useState } from "react";
 import { ChevronDown, Search } from "react-feather";
 import ProfileImage from "../component/ProfileImage";
@@ -7,8 +8,9 @@ import { DOCTOR_CRUD } from "../constants/constants";
 import { Doctor, useAuth } from "../hooks/Auth";
 
 export default function SearchDoctor() {
-  const auth = useAuth();
   const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<Doctor[]>([]);
 
   useEffect(() => {
     axios
@@ -23,6 +25,18 @@ export default function SearchDoctor() {
       });
   }, []);
 
+  useEffect(() => {
+    if (query !== "") {
+      const res = fuzzysort
+        .go(query, doctors, { key: "name", allowTypo: true })
+        .map((item) => item.obj);
+
+      setResults(res);
+    } else {
+      setResults(doctors);
+    }
+  }, [query, doctors]);
+
   return (
     <div className="main_content">
       <TitleHeader title="Search" role="Doctor"></TitleHeader>
@@ -34,13 +48,20 @@ export default function SearchDoctor() {
         </button>
       </div>
       <div className="search_bar">
-        <input type="text" name="search" id="search" placeholder="Search" />
+        <input
+          type="text"
+          name="search"
+          id="search"
+          placeholder="Search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
         <button className="button small">
           <Search></Search>
         </button>
       </div>
       <div className="cards">
-        {doctors?.map((doctor, i) => (
+        {results?.map((doctor, i) => (
           <div className="card">
             <div className="row">
               <ProfileImage size={40} name={doctor.name} />

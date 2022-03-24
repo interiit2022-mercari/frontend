@@ -8,6 +8,7 @@ html {
 }
 
 .main_content {
+  flex: 1;
   margin: 1rem auto;
   @include sm {
     margin: 1rem 1rem 3rem;
