@@ -5,7 +5,6 @@ import { useAuth } from "../hooks/Auth";
 
 export default function BottomNavbar() {
   const auth = useAuth();
-  const is_sme = auth?.user && auth.user.role === "SME";
 
   return (
     <nav className="bottomNav">
@@ -29,16 +28,7 @@ export default function BottomNavbar() {
           </li>
         </NavLink>
 
-        {!is_sme && (
-          <NavLink exact to="/network">
-            <li>
-              <Icon.Share2 />
-              <p>NETWORK</p>
-            </li>
-          </NavLink>
-        )}
-
-        <NavLink exact to={is_sme ? "/profile" : "/portfolio"}>
+        <NavLink exact to="/profile">
           <li>
             <Icon.User />
             <p>PROFILE</p>
