@@ -12,8 +12,7 @@ export default function Navbar() {
       <div className="wrapper">
         <Link className="no_style" to="/dashboard">
           <header>
-            <img src={logo} alt="Logo" />
-            <h1>GrameenSetu</h1>
+            <h1>HMS</h1>
           </header>
         </Link>
         {auth?.user == null && (
