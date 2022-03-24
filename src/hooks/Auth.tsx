@@ -1,32 +1,30 @@
 import React, { useContext, createContext, useState } from "react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { BACKEND_URL } from "../constants/constants";
+import { stringify } from "node:querystring";
 
-export type registerForm_SHG = {
+export type registerForm_Patient = {
   name: string;
-  phone: string;
-  WAcontact: string;
   user_type: string;
-  industry_type: string;
-  account_number: string;
-  branch_code: string;
-
-  name_SHG: string;
-  production_cap: string;
-  order_size: string;
+  phone: string;
+  emergency_contact: string;
+  blood_group: string;
+  age: string;
+  gender: string;
+  NHID: string;
 };
 
-export type registerForm_SME = {
+export type registerForm_Doctor = {
   name: string;
-  phone: string;
-  WAcontact: string;
   user_type: string;
-  industry_type: string;
-  account_number: string;
-  branch_code: string;
-
-  address: string;
-  product_sold: string;
+  phone: string;
+  emergency_phone: string;
+  blood_group: string;
+  age: string;
+  gender: string;
+  medical_profession: string;
+  degree: string;
+  years_of_experience: string;
 };
 
 export type loginForm = {
@@ -36,104 +34,89 @@ export type loginForm = {
   remember: string;
 };
 
-export class SHGUser {
-  shg_id: number;
+export class Patient {
   access_token: string;
   profile_image_uri: string;
 
   name: string;
-  phone: string;
-  WAcontact: string;
   user_type: string;
-  industry_type: string;
-  account_number: string;
-  branch_code: string;
-
-  name_SHG: string;
-  production_cap: string;
-  order_size: string;
+  phone: string;
+  emergency_contact: string;
+  blood_group: string;
+  age: string;
+  gender: string;
+  NHID: string;
 
   constructor(
-    shg_id: number,
     access_token: string,
     profile_image_uri: string,
 
     name: string,
-    phone: string,
-    WAcontact: string,
     user_type: string,
-    industry_type: string,
-    account_number: string,
-    branch_code: string,
-
-    name_SHG: string,
-    production_cap: string,
-    order_size: string
+    phone: string,
+    emergency_contact: string,
+    blood_group: string,
+    age: string,
+    gender: string,
+    NHID: string
   ) {
-    this.shg_id = shg_id;
     this.access_token = access_token;
     this.profile_image_uri = profile_image_uri;
 
     this.name = name;
-    this.phone = phone;
-    this.WAcontact = WAcontact;
     this.user_type = user_type;
-    this.industry_type = industry_type;
-    this.account_number = account_number;
-    this.branch_code = branch_code;
-
-    this.name_SHG = name_SHG;
-    this.production_cap = production_cap;
-    this.order_size = order_size;
+    this.phone = phone;
+    this.emergency_contact = emergency_contact;
+    this.blood_group = blood_group;
+    this.age = age;
+    this.gender = gender;
+    this.NHID = NHID;
   }
 }
 
-export class SMEUser {
-  sme_id: number;
+export class Doctor {
   access_token: string;
   profile_image_uri: string;
 
   name: string;
-  phone: string;
-  WAcontact: string;
   user_type: string;
-  industry_type: string;
-  account_number: string;
-  branch_code: string;
-
-  address: string;
-  product_sold: string;
+  phone: string;
+  emergency_phone: string;
+  blood_group: string;
+  age: string;
+  gender: string;
+  medical_profession: string;
+  degree: string;
+  years_of_experience: string;
 
   constructor(
-    sme_id: number,
     access_token: string,
     profile_image_uri: string,
 
     name: string,
-    phone: string,
-    WAcontact: string,
     user_type: string,
-    industry_type: string,
-    account_number: string,
-    branch_code: string,
-
-    address: string,
-    product_sold: string
+    phone: string,
+    emergency_phone: string,
+    blood_group: string,
+    age: string,
+    gender: string,
+    medical_profession: string,
+    degree: string,
+    years_of_experience: string
   ) {
-    this.sme_id = sme_id;
     this.access_token = access_token;
     this.profile_image_uri = profile_image_uri;
 
     this.name = name;
-    this.phone = phone;
-    this.WAcontact = WAcontact;
     this.user_type = user_type;
-    this.industry_type = industry_type;
-    this.account_number = account_number;
-    this.branch_code = branch_code;
-
-    this.address = address;
-    this.product_sold = product_sold;
+    this.phone = phone;
+    this.emergency_phone = emergency_phone;
+    this.blood_group = blood_group;
+    this.age = age;
+    this.gender = gender;
+    this.medical_profession = medical_profession;
+    this.degree = degree;
+    this.years_of_experience = years_of_experience;
   }
 }
 
@@ -141,7 +124,7 @@ const authConnector = {
   isAuthenticated: false,
   login(
     data: loginForm,
-    cb: (user: SHGUser | SMEUser) => void,
+    cb: (user: Patient | Doctor) => void,
     cbe: (e: AxiosError) => void
   ) {
     authConnector.isAuthenticated = true;
@@ -157,10 +140,15 @@ const authConnector = {
     authConnector.isAuthenticated = false;
     cb();
   },
-  registerSHG(data: registerForm_SHG, cb: (response: AxiosResponse) => void) {
+  registerPatient(
+    data: registerForm_Patient,
+    cb: (response: AxiosResponse) => void
+  ) {
     authConnector.isAuthenticated = false;
+
+    // TODO: update url
     axios
-      .post(`${BACKEND_URL}/auth/signup/shg`, data)
+      .post(`${BACKEND_URL}/auth/signup/`, data)
       .then((response) => {
         // console.log(response);
         cb(response);
@@ -170,10 +158,15 @@ const authConnector = {
         cb(error.response);
       });
   },
-  registerSME(data: registerForm_SME, cb: (response: AxiosResponse) => void) {
+  registerDoctor(
+    data: registerForm_Doctor,
+    cb: (response: AxiosResponse) => void
+  ) {
     authConnector.isAuthenticated = false;
+
+    // TODO: update url
     axios
-      .post(`${BACKEND_URL}/auth/signup/sme`, data)
+      .post(`${BACKEND_URL}/auth/signup`, data)
       .then((response) => {
         // console.log(response);
         cb(response);
@@ -186,19 +179,19 @@ const authConnector = {
 };
 
 export type AuthContextType = {
-  user: SHGUser | SMEUser | null;
+  user: Patient | Doctor | null;
   login: (
     data: loginForm,
     cb: () => void,
     cbe: (e: AxiosError) => void
   ) => void;
   signout: (cb: () => void) => void;
-  registerSHG: (
-    data: registerForm_SHG,
+  registerPatient: (
+    data: registerForm_Patient,
     cb: (response: AxiosResponse) => void
   ) => void;
-  registerSME: (
-    data: registerForm_SME,
+  registerDoctor: (
+    data: registerForm_Doctor,
     cb: (response: AxiosResponse) => void
   ) => void;
   authHeader: () => AxiosRequestConfig;
@@ -218,7 +211,7 @@ function useAuth() {
 }
 
 function useProvideAuth() {
-  const [user, setUser] = useState<SMEUser | SHGUser | null>(
+  const [user, setUser] = useState<Patient | Doctor | null>(
     getUserFromLocalStorage()
   );
 
@@ -247,21 +240,21 @@ function useProvideAuth() {
     });
   };
 
-  const registerSME = (
-    data: registerForm_SME,
+  const registerPatient = (
+    data: registerForm_Patient,
     cb: (response: AxiosResponse) => void
   ) => {
-    return authConnector.registerSME(data, (response) => {
+    return authConnector.registerPatient(data, (response) => {
       setUser(null);
       cb(response);
     });
   };
 
-  const registerSHG = (
-    data: registerForm_SHG,
+  const registerDoctor = (
+    data: registerForm_Doctor,
     cb: (response: AxiosResponse) => void
   ) => {
-    return authConnector.registerSHG(data, (response) => {
+    return authConnector.registerDoctor(data, (response) => {
       setUser(null);
       cb(response);
     });
@@ -282,13 +275,13 @@ function useProvideAuth() {
     user,
     login,
     signout,
-    registerSME,
-    registerSHG,
+    registerPatient,
+    registerDoctor,
     authHeader,
   };
 }
 
-function getUserFromLocalStorage(): SHGUser | SMEUser | null {
+function getUserFromLocalStorage(): Patient | Doctor | null {
   let userJSON = localStorage.getItem("user");
   if (userJSON) {
     return JSON.parse(userJSON);

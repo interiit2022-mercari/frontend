@@ -4,8 +4,9 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/Auth";
 
 interface Props {
-  accountNumber: string;
-  branchCode: string;
+  medicalProfession: string;
+  degree: string;
+  yearsOfExperience: string;
   type: string;
   currentStep: number;
 
@@ -13,8 +14,9 @@ interface Props {
 }
 
 export default function Step3({
-  accountNumber,
-  branchCode,
+  medicalProfession,
+  degree,
+  yearsOfExperience,
   type,
   currentStep,
   handleNextSubmit,
@@ -43,17 +45,24 @@ export default function Step3({
 
   return (
     <form onSubmit={handleSubmit(handleNextSubmit)}>
-      <span className="label"> Account Number </span>
+      <span className="label"> Medical Profession</span>
       <input
-        name="account_number"
-        placeholder={accountNumber}
+        name="medical_profession"
+        placeholder={medicalProfession}
         ref={register({ required: false })}
       />
 
-      <span className="label"> IFSC Code </span>
+      <span className="label"> Degree </span>
       <input
-        name="branch_code"
-        placeholder={branchCode}
+        name="degree"
+        placeholder={degree}
+        ref={register({ required: false })}
+      />
+
+      <span className="label"> Years of Experience </span>
+      <input
+        name="years_of_experience"
+        placeholder={yearsOfExperience}
         ref={register({ required: false })}
       />
 

@@ -1,6 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import React, { useState } from "react";
-import { useAuth, registerForm_SHG, registerForm_SME } from "../hooks/Auth";
+import {
+  useAuth,
+  registerForm_Patient,
+  registerForm_Doctor,
+} from "../hooks/Auth";
 import StepOne from "../component/signupForms/StepOne";
 import { stat } from "node:fs";
 import { useForm } from "react-hook-form";
@@ -25,98 +29,73 @@ function Register() {
   const [state, setState] = useState({
     // non user specific
     name: "Name",
+    user_type: "Patient",
     username: "Username",
     password: "Password",
     profile_image_uri: "",
-    media: "",
     phone: "+91 XXXX XX XXXX",
-    WAcontact: "+91 XXXX XX XXXX", // for WhatsApp
-    user_type: "SHG",
-    industry_type: "Agriculture, Something, Engineering",
-    account_number: "Account Number",
-    branch_code: "IFSC Code",
+    blood_group: "Blood Group",
+    age: "Age",
+    gender: "Gender",
 
-    // for SHGs only
-    name_SHG: "Name of SHG",
-    production_cap: "Production Capacity",
-    order_size: "Order Size",
-    members: "No members added yet",
-    member_name: "Name",
-    member_aadhar: "Aadhar",
-    member_contact: "+91 XXXX XX XXXX",
-    skill: "Agriculture, Something, Engineering",
+    // for Patients only
+    NHID: "NHID",
+    emergency_contact: "+91 XXXX XX XXXX",
 
-    // for SMEs only
-    address: "Address",
-    product_sold: "Products Sold",
+    // for Doctors only
+    emergency_phone: "+91 XXXX XX XXXX",
+    medical_profession: "Medical Profession",
+    degree: "Degree",
+    years_of_experience: "Years of Experience",
   });
 
   const onSubmit = () => {
     setIsLoading(true);
 
-    if (state.media.length > 0) {
-      const e = state.media[0];
-      const d = new FormData();
-      let photograph;
-      console.log(e);
-      d.append("image", e);
-      axios
-        .post("https://api.imgbb.com/1/upload?key=" + API_IMGBB, d)
-        .then((resp) => {
-          photograph = resp.data.data.image.url;
-          console.log(photograph);
+    // TODO: random image generator service here
+    state.profile_image_uri = "";
 
-          state.profile_image_uri = photograph;
+    if (state.user_type === "Patient") {
+      const {
+        medical_profession,
+        degree,
+        years_of_experience,
+        profile_image_uri,
+        emergency_phone,
+        ...data
+      } = state;
+      console.log(data);
 
-          if (state.user_type === "SHG") {
-            const { address, product_sold, ...data } = state;
-            console.log(data);
+      auth?.registerPatient(data, (response: AxiosResponse) => {
+        // console.log("registration succex");
+        setIsLoading(false);
 
-            auth?.registerSHG(data, (response: AxiosResponse) => {
-              // console.log("registration succex");
-              setIsLoading(false);
+        if (response.status === 200) {
+          toast.success("Successfully registered, Please login");
 
-              if (response.status === 200) {
-                toast.success("Successfully registered, Please login");
+          history.push("/login");
+        } else {
+          setMessage("An error occured, try again later.");
+        }
+      });
+    } else {
+      const { NHID, emergency_contact, ...data } = state;
 
-                history.push("/login");
-              } else {
-                setMessage("An error occured, try again later.");
-              }
-            });
-          } else {
-            const {
-              name_SHG,
-              production_cap,
-              order_size,
-              members,
-              member_name,
-              member_aadhar,
-              member_contact,
-              skill,
-              ...data
-            } = state;
+      console.log(data);
 
-            console.log(data);
+      auth?.registerDoctor(data, (response: AxiosResponse) => {
+        // console.log("registration succex");
+        setIsLoading(false);
 
-            auth?.registerSME(data, (response: AxiosResponse) => {
-              // console.log("registration succex");
-              setIsLoading(false);
+        toast.success("Successfully registered, Please login");
 
-              toast.success("Successfully registered, Please login");
+        history.push("/login");
 
-              history.push("/login");
-
-              if (response === undefined || response.status === 500)
-                setMessage("Server is down, please try again later");
-              else if (response.status === 200) setIsRegistered(true);
-              else setMessage(response.data.message);
-            });
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+        if (response === undefined || response.status === 500)
+          setMessage("Server is down, please try again later");
+        else if (response.status === 200) setIsRegistered(true);
+        else setMessage(response.data.message);
+      });
     }
   };
 
@@ -185,23 +164,19 @@ function Register() {
           handleTypeChange={handleTypeChange}
         />
 
-        {state.user_type === "SHG" ? (
+        {state.user_type === "Patient" ? (
           <>
             <StepTwo
-              nameSHG={state.name_SHG}
-              media={state.media}
-              productionCap={state.production_cap}
-              orderSize={state.order_size}
-              contact={state.WAcontact}
-              industryType={state.industry_type}
+              contact={state.emergency_contact}
+              gender={state.gender}
+              age={state.age}
               type={state.user_type}
               currentStep={step}
               handleNextSubmit={handleNextSubmit}
             />
 
-            <Step3
-              accountNumber={state.account_number}
-              branchCode={state.branch_code}
+            <StepThree
+              NHID={state.NHID}
               type={state.user_type}
               currentStep={step}
               handleNextSubmit={handleNextSubmit}
@@ -211,22 +186,21 @@ function Register() {
           ""
         )}
 
-        {state.user_type === "SME" ? (
+        {state.user_type === "Doctor" ? (
           <>
             <Step2
-              address={state.address}
-              media={state.media}
-              productSold={state.product_sold}
-              contact={state.WAcontact}
-              industryType={state.industry_type}
+              contact={state.emergency_phone}
+              gender={state.gender}
+              age={state.age}
               type={state.user_type}
               currentStep={step}
               handleNextSubmit={handleNextSubmit}
             />
 
             <Step3
-              accountNumber={state.account_number}
-              branchCode={state.branch_code}
+              medicalProfession={state.medical_profession}
+              degree={state.degree}
+              yearsOfExperience={state.years_of_experience}
               type={state.user_type}
               currentStep={step}
               handleNextSubmit={handleNextSubmit}

@@ -12,7 +12,7 @@ function Login() {
   let history = useHistory();
   const { register, handleSubmit, errors } = useForm();
   const [message, setMessage] = useState("");
-  const [type, setType] = useState("SHG");
+  const [type, setType] = useState("Patient");
 
   const onSubmit = (data: loginForm) => {
     data.user_type = type;
@@ -69,16 +69,16 @@ function Login() {
           <span className="label"> Type of User </span>
           <div className="types">
             <div
-              className={`type ${type == "SHG" && "current"}`}
-              onClick={() => handleTypeChange("SHG")}
+              className={`type ${type == "Patient" && "current"}`}
+              onClick={() => handleTypeChange("Patient")}
             >
-              Producer
+              Patient
             </div>
             <div
-              className={`type ${type == "SME" && "current"}`}
-              onClick={() => handleTypeChange("SME")}
+              className={`type ${type == "Doctor" && "current"}`}
+              onClick={() => handleTypeChange("Doctor")}
             >
-              Buyer
+              Doctor
             </div>
           </div>
           <button type="submit" disabled={isLoading}>

@@ -81,16 +81,16 @@ export default function StepOne({
       <span className="label"> Type of User </span>
       <div className="types">
         <div
-          className={`type ${type == "SHG" && "current"}`}
-          onClick={() => handleTypeChange("SHG")}
+          className={`type ${type == "Patient" && "current"}`}
+          onClick={() => handleTypeChange("Patient")}
         >
-          Producer
+          Patient
         </div>
         <div
-          className={`type ${type == "SME" && "current"}`}
-          onClick={() => handleTypeChange("SME")}
+          className={`type ${type == "Doctor" && "current"}`}
+          onClick={() => handleTypeChange("Doctor")}
         >
-          Buyer
+          Doctor
         </div>
       </div>
       {/* <input

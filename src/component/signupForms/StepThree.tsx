@@ -4,11 +4,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/Auth";
 
 interface Props {
-  members: string;
-  memberName: string;
-  memberContact: string;
-  memberAadhar: string;
-  skill: string;
+  NHID: string;
   type: string;
   currentStep: number;
 
@@ -16,11 +12,7 @@ interface Props {
 }
 
 export default function StepThree({
-  members,
-  memberName,
-  memberAadhar,
-  memberContact,
-  skill,
+  NHID,
   type,
   currentStep,
   handleNextSubmit,
@@ -49,44 +41,13 @@ export default function StepThree({
 
   return (
     <form onSubmit={handleSubmit(handleNextSubmit)}>
-      <span className="label"> Members </span>
+      <span className="label"> NHID </span>
       <input
-        name="members"
-        placeholder={members}
+        name="nhid"
+        placeholder={NHID}
         ref={register({ required: false })}
       />
 
-      <span className="label"> Member Name </span>
-      <input
-        name="member_name"
-        placeholder={memberName}
-        ref={register({ required: false })}
-      />
-
-      <span className="label"> Member Aadhar </span>
-      <input
-        name="member_aadhar"
-        placeholder={memberAadhar}
-        ref={register({ required: false })}
-      />
-
-      <span className="label"> Contact Number </span>
-      <input
-        name="member_contact"
-        placeholder={memberContact}
-        ref={register({ required: false })}
-      />
-
-      <span className="label"> Skill </span>
-      {
-        <select name="skill">
-          {skill.split(",").map((type) => (
-            <option> {type} </option>
-          ))}
-        </select>
-      }
-
-      <input type="submit" value="Add Member" />
       <div className="signup-btns">
         <input type="submit" value="Next" />
         <span> Steps: {currentStep}/3</span>
