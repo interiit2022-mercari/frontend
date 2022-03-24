@@ -1,46 +1,31 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ChevronDown, Search } from "react-feather";
-import { Link } from "react-router-dom";
 import TitleHeader from "../component/TitleHeader";
 import { BACKEND_URL, prod_images } from "../constants/constants";
 import { useAuth } from "../hooks/Auth";
+import { Link } from "react-router-dom";
+import { ChevronDown, Search } from "react-feather";
 
-interface Tender {
-  id: number;
+interface Product {
+  product_id: number;
+  shg_id: number;
   name: string;
-  state: string;
   description: string;
-  media: {
-    uri: string;
-    type: string;
-  }[];
-  milestones: {
-    description: string;
-    media: {
-      uri: string;
-      type: string;
-    }[];
-  }[];
-  sme: {
-    id: number;
-    name: string;
-    profile_image_uri: string;
-    phone: string;
-  };
+  image_uri: string;
+  min_size: string;
+  price: string;
 }
 
-export default function SearchSHG() {
+export default function SearchPatient() {
   const auth = useAuth();
-  const [tenders, setTenders] = useState<Tender[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/tender/all`)
+      .get(`${BACKEND_URL}/product/all`)
       .then((res) => {
-        // console.log(res);
-        res.data.reverse();
-        setTenders(res.data);
+        console.log(res.data, "products");
+        setProducts(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -49,9 +34,9 @@ export default function SearchSHG() {
 
   return (
     <div className="main_content">
-      <TitleHeader title="Search" role="SHG"></TitleHeader>
+      <TitleHeader title="Search" role="Patient"></TitleHeader>
       <div className="right_aligned">
-        <p>Tenders</p>
+        <p>Products</p>
         <button className="default small">
           Filters
           <ChevronDown></ChevronDown>
@@ -65,13 +50,12 @@ export default function SearchSHG() {
       </div>
       <br />
       <div className="cards">
-        {tenders?.map((t, i) => (
-          <Link to={`/tender/${t.id}/bid`} className="no_style">
+        {products.map((p, i) => (
+          <Link to={`/product/${p.product_id}`} className="no_style">
             <div className="shg card">
-              <img src={t?.media[0]?.uri} alt="" />
-              <h1>{t.name}</h1>
-              <p>{t.sme.name}</p>
-              <p>{t.description}</p>
+              <img src={p.image_uri} alt="" />
+              <h1>{p.name}</h1>
+              <p>{p.description}</p>
             </div>
           </Link>
         ))}

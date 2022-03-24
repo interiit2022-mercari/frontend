@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import PrivateRoute from "./component/PrivateRoute";
 import Navbar from "./component/Navbar";
-import Footer from "./component/Footer";
 
 import Home from "./views/Home";
 import Login from "./views/Login";
@@ -16,11 +15,11 @@ import Register from "./views/Register";
 
 import "./styles/main.scss";
 import BottomNavbar from "./component/BottomNavbar";
-import SearchSME from "./views/SearchSME";
-import SearchSHG from "./views/SearchSHG";
-import ProfileSME from "./views/ProfileSME";
 import ScrollToTop from "./component/ScrollToTop";
 import { Toaster } from "react-hot-toast";
+import SearchDoctor from "./views/SearchDoctor";
+import SearchPatient from "./views/SearchPatient";
+import Profile from "./views/Profile";
 
 function App() {
   let auth = useAuth();
@@ -49,11 +48,15 @@ function App() {
           </Route>
 
           <PrivateRoute exact path="/search/">
-            {auth?.user?.role === "SME" ? <SearchSME /> : <SearchSHG />}
+            {auth?.user?.role === "Patient" ? (
+              <SearchDoctor />
+            ) : (
+              <SearchPatient />
+            )}
           </PrivateRoute>
 
           <Route exact path="/profile">
-            <ProfileSME />
+            <Profile />
           </Route>
 
           <Route exact path="/">
@@ -61,8 +64,6 @@ function App() {
           </Route>
         </Switch>
         {auth?.user != null && <BottomNavbar />}
-        {/* TODO: decide what to add in footer and uncomment it here */}
-        {/* <Footer /> */}
       </div>
     </Router>
   );
