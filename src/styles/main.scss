@@ -1,0 +1,30 @@
+@import "variables";
+@import "typography";
+@import "responsive";
+
+body {
+  color: $text;
+  background-color: $background;
+  margin: 0 auto;
+  @include lg {
+    max-width: 60vw;
+    padding-left: 5vw;
+  }
+}
+
+.home {
+  margin: auto;
+  img {
+    width: 100%;
+  }
+}
+
+@import "generic";
+@import "app";
+@import "authform";
+@import "navbar";
+@import "footer";
+@import "payments";
+@import "modal";
+
+@import "flex_comp";
