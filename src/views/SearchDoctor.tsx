@@ -62,7 +62,7 @@ export default function SearchDoctor() {
       </div>
       <div className="cards">
         {results?.map((doctor, i) => (
-          <div className="card">
+          <div className="card" key={i}>
             <div className="row">
               <ProfileImage size={40} name={doctor.name} />
               <h1>{doctor.name}</h1>
