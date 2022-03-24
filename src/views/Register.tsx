@@ -29,7 +29,8 @@ function Register() {
   const [state, setState] = useState({
     // non user specific
     name: "Name",
-    user_type: "Patient",
+    role: "patient",
+    email: "Email Address",
     username: "Username",
     password: "Password",
     profile_image_uri: "",
@@ -55,7 +56,7 @@ function Register() {
     // TODO: random image generator service here
     state.profile_image_uri = "";
 
-    if (state.user_type === "Patient") {
+    if (state.role === "patient") {
       const {
         medical_profession,
         degree,
@@ -70,7 +71,7 @@ function Register() {
         // console.log("registration succex");
         setIsLoading(false);
 
-        if (response.status === 200) {
+        if (response.status === 201) {
           toast.success("Successfully registered, Please login");
 
           history.push("/login");
@@ -133,7 +134,7 @@ function Register() {
   const handleTypeChange = (type: string) => {
     setState({
       ...state,
-      user_type: type,
+      role: type,
     });
   };
 
@@ -150,34 +151,35 @@ function Register() {
       <div className="form">
         <div className="title">
           <h1>Signup</h1>
-          {step > 1 ? <p>{state.user_type}</p> : null}
+          {step > 1 ? <p>{state.role}</p> : null}
         </div>
         <div className="error">{message}</div>
         <StepOne
           name={state.name}
           username={state.username}
+          email={state.username}
           password={state.password}
-          phone={state.phone}
-          type={state.user_type}
+          type={state.role}
           currentStep={step}
           handleNextSubmit={handleNextSubmit}
           handleTypeChange={handleTypeChange}
         />
 
-        {state.user_type === "Patient" ? (
+        {state.role === "patient" ? (
           <>
             <StepTwo
+              phone={state.phone}
               contact={state.emergency_contact}
               gender={state.gender}
               age={state.age}
-              type={state.user_type}
+              type={state.role}
               currentStep={step}
               handleNextSubmit={handleNextSubmit}
             />
 
             <StepThree
               NHID={state.NHID}
-              type={state.user_type}
+              type={state.role}
               currentStep={step}
               handleNextSubmit={handleNextSubmit}
             />
@@ -186,13 +188,14 @@ function Register() {
           ""
         )}
 
-        {state.user_type === "Doctor" ? (
+        {state.role === "doctor" ? (
           <>
             <Step2
+              phone={state.phone}
               contact={state.emergency_phone}
               gender={state.gender}
               age={state.age}
-              type={state.user_type}
+              type={state.role}
               currentStep={step}
               handleNextSubmit={handleNextSubmit}
             />
@@ -201,7 +204,7 @@ function Register() {
               medicalProfession={state.medical_profession}
               degree={state.degree}
               yearsOfExperience={state.years_of_experience}
-              type={state.user_type}
+              type={state.role}
               currentStep={step}
               handleNextSubmit={handleNextSubmit}
             />

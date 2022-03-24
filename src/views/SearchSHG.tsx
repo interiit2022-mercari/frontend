@@ -49,7 +49,7 @@ export default function SearchSHG() {
 
   return (
     <div className="main_content">
-      <TitleHeader title="Search" user_type="SHG"></TitleHeader>
+      <TitleHeader title="Search" role="SHG"></TitleHeader>
       <div className="right_aligned">
         <p>Tenders</p>
         <button className="default small">

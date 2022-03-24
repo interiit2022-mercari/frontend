@@ -6,7 +6,7 @@ import { useAuth } from "../hooks/Auth";
 // Use like Route
 export default function PrivateRoute(props: any) {
   let auth = useAuth();
-  let { children, user_type, ...rest } = props;
+  let { children, role, ...rest } = props;
   let render = (
     <Redirect
       to={{
@@ -16,8 +16,8 @@ export default function PrivateRoute(props: any) {
   );
 
   if (auth !== null && auth.user) {
-    if (user_type !== undefined) {
-      if (auth.user.user_type === user_type) {
+    if (role !== undefined) {
+      if (auth.user.role === role) {
         render = props.children;
       } else {
         render = (

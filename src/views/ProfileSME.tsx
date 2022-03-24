@@ -12,7 +12,7 @@ export default function ProfileSME() {
 
   return (
     <div className="main_content">
-      <TitleHeader title="Profile" user_type="SME" />
+      <TitleHeader title="Profile" role="SME" />
       <div className="full_image">
         <img src={auth?.user?.profile_image_uri} alt="" />
       </div>

@@ -5,7 +5,7 @@ import { stringify } from "node:querystring";
 
 export type registerForm_Patient = {
   name: string;
-  user_type: string;
+  role: string;
   phone: string;
   emergency_contact: string;
   blood_group: string;
@@ -16,7 +16,7 @@ export type registerForm_Patient = {
 
 export type registerForm_Doctor = {
   name: string;
-  user_type: string;
+  role: string;
   phone: string;
   emergency_phone: string;
   blood_group: string;
@@ -29,7 +29,7 @@ export type registerForm_Doctor = {
 
 export type loginForm = {
   username: string;
-  user_type: string;
+  role: string;
   password: string;
   remember: string;
 };
@@ -39,7 +39,7 @@ export class Patient {
   profile_image_uri: string;
 
   name: string;
-  user_type: string;
+  role: string;
   phone: string;
   emergency_contact: string;
   blood_group: string;
@@ -52,7 +52,7 @@ export class Patient {
     profile_image_uri: string,
 
     name: string,
-    user_type: string,
+    role: string,
     phone: string,
     emergency_contact: string,
     blood_group: string,
@@ -64,7 +64,7 @@ export class Patient {
     this.profile_image_uri = profile_image_uri;
 
     this.name = name;
-    this.user_type = user_type;
+    this.role = role;
     this.phone = phone;
     this.emergency_contact = emergency_contact;
     this.blood_group = blood_group;
@@ -79,7 +79,7 @@ export class Doctor {
   profile_image_uri: string;
 
   name: string;
-  user_type: string;
+  role: string;
   phone: string;
   emergency_phone: string;
   blood_group: string;
@@ -94,7 +94,7 @@ export class Doctor {
     profile_image_uri: string,
 
     name: string,
-    user_type: string,
+    role: string,
     phone: string,
     emergency_phone: string,
     blood_group: string,
@@ -108,7 +108,7 @@ export class Doctor {
     this.profile_image_uri = profile_image_uri;
 
     this.name = name;
-    this.user_type = user_type;
+    this.role = role;
     this.phone = phone;
     this.emergency_phone = emergency_phone;
     this.blood_group = blood_group;
@@ -148,7 +148,7 @@ const authConnector = {
 
     // TODO: update url
     axios
-      .post(`${BACKEND_URL}/auth/signup/`, data)
+      .post(`${AUTH_SERVICE}/register`, data)
       .then((response) => {
         // console.log(response);
         cb(response);
@@ -166,7 +166,7 @@ const authConnector = {
 
     // TODO: update url
     axios
-      .post(`${BACKEND_URL}/auth/signup`, data)
+      .post(`${AUTH_SERVICE}/register`, data)
       .then((response) => {
         // console.log(response);
         cb(response);

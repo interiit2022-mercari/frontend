@@ -34,7 +34,7 @@ export default function SearchSME() {
 
   return (
     <div className="main_content">
-      <TitleHeader title="Search" user_type="SME"></TitleHeader>
+      <TitleHeader title="Search" role="SME"></TitleHeader>
       <div className="right_aligned">
         <p>Products</p>
         <button className="default small">

@@ -6,8 +6,8 @@ import { useAuth } from "../../hooks/Auth";
 interface Props {
   name: string;
   username: string;
+  email: string;
   password: string;
-  phone: string;
   type: string;
   currentStep: number;
 
@@ -18,8 +18,8 @@ interface Props {
 export default function StepOne({
   name,
   username,
+  email,
   password,
-  phone,
   type,
   currentStep,
   handleNextSubmit,
@@ -63,6 +63,13 @@ export default function StepOne({
         ref={register({ required: true })}
       />
 
+      <span className="label"> Email </span>
+      <input
+        name="email"
+        placeholder={email}
+        ref={register({ required: true })}
+      />
+
       <span className="label"> Password </span>
       <input
         name="password"
@@ -71,24 +78,17 @@ export default function StepOne({
         ref={register({ required: true })}
       />
 
-      <span className="label"> Phone Number </span>
-      <input
-        name="phone"
-        placeholder={phone}
-        ref={register({ required: true })}
-      />
-
       <span className="label"> Type of User </span>
       <div className="types">
         <div
-          className={`type ${type == "Patient" && "current"}`}
-          onClick={() => handleTypeChange("Patient")}
+          className={`type ${type == "patient" && "current"}`}
+          onClick={() => handleTypeChange("patient")}
         >
           Patient
         </div>
         <div
-          className={`type ${type == "Doctor" && "current"}`}
-          onClick={() => handleTypeChange("Doctor")}
+          className={`type ${type == "doctor" && "current"}`}
+          onClick={() => handleTypeChange("doctor")}
         >
           Doctor
         </div>

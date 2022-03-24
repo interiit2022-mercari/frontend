@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/Auth";
 
 export default function BottomNavbar() {
   const auth = useAuth();
-  const is_sme = auth?.user && auth.user.user_type === "SME";
+  const is_sme = auth?.user && auth.user.role === "SME";
 
   return (
     <nav className="bottomNav">

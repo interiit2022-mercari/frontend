@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/Auth";
 
 interface Props {
+  phone: string;
   contact: string;
   gender: string;
   age: string;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function Step2({
+  phone,
   contact,
   gender,
   age,
@@ -31,6 +33,13 @@ export default function Step2({
 
   return (
     <form onSubmit={handleSubmit(handleNextSubmit)}>
+      <span className="label"> Phone Number </span>
+      <input
+        name="phone"
+        placeholder={phone}
+        ref={register({ required: true })}
+      />
+
       <span className="label"> Emergency Contact </span>
       <input
         name="emergency_contact"

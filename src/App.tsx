@@ -49,7 +49,7 @@ function App() {
           </Route>
 
           <PrivateRoute exact path="/search/">
-            {auth?.user?.user_type === "SME" ? <SearchSME /> : <SearchSHG />}
+            {auth?.user?.role === "SME" ? <SearchSME /> : <SearchSHG />}
           </PrivateRoute>
 
           <Route exact path="/profile">
