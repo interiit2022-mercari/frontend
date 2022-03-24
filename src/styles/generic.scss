@@ -52,6 +52,7 @@ html {
     margin: 0.5rem 0 1rem;
 
     .type {
+      flex: 1;
       min-width: 40%;
       text-align: center;
       padding: 0.5rem 1rem;
@@ -381,7 +382,7 @@ input[type="radio"] {
 }
 
 input[type="submit"] {
-  background: linear-gradient(277.15deg, #45988e 37.28%, #82d0aa 100%);
+  background-color: $primary;
 }
 
 //for button loader
@@ -409,7 +410,7 @@ textarea,
 select {
   color: $text;
   background-color: $background-alt;
-  border:1px solid #252f43;
+  border: 1px solid #252f43;
   border-radius: 0.25rem;
   font-family: inherit;
   font-size: inherit;
