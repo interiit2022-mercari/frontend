@@ -18,7 +18,6 @@ import BottomNavbar from "./component/BottomNavbar";
 import ScrollToTop from "./component/ScrollToTop";
 import { Toaster } from "react-hot-toast";
 import SearchDoctor from "./views/SearchDoctor";
-import SearchPatient from "./views/SearchPatient";
 import Profile from "./views/Profile";
 
 function App() {
@@ -48,11 +47,7 @@ function App() {
           </Route>
 
           <PrivateRoute exact path="/search/">
-            {auth?.user?.role === "Patient" ? (
-              <SearchDoctor />
-            ) : (
-              <SearchPatient />
-            )}
+            <SearchDoctor />
           </PrivateRoute>
 
           <Route exact path="/profile">

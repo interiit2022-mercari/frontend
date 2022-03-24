@@ -240,24 +240,38 @@ html {
     display: flex;
     flex-wrap: wrap;
     @include full_width(2rem);
-    justify-content: space-between;
+    justify-content: space-around;
+
     .card {
       display: flex;
       flex-direction: column;
-      margin: 1rem 0 2rem 0;
-      width: calc(50vw - 1.5rem);
+      width: 100%;
+      margin: 0.75rem 0;
+
+      background: $background-alt;
+      padding: 1rem;
+      border-radius: 1rem;
+
+      .row {
+        display: flex;
+        align-items: center;
+
+        h1 {
+          font-size: 1.5rem;
+          margin: 0 0.5rem;
+        }
+      }
+
       @include lg {
         width: calc(30vw - 1.5rem);
       }
+
       .details {
         flex-grow: 1;
       }
-      h1 {
-        font-size: 1.5rem;
-        margin: 0 0 0.25rem;
-      }
+
       p {
-        margin: 0;
+        margin: 0.25rem 0;
       }
       img {
         width: calc(50vw - 2rem);

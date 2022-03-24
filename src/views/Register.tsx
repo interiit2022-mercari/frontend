@@ -14,7 +14,6 @@ import Step2 from "../component/signupForms/Step2";
 import Step3 from "../component/signupForms/Step3";
 import { useHistory } from "react-router";
 import toast from "react-hot-toast";
-import { API_IMGBB } from "../constants/constants";
 import * as Icon from "react-feather";
 
 function Register() {

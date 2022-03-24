@@ -1,46 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ChevronDown, Search } from "react-feather";
-import { Link } from "react-router-dom";
+import ProfileImage from "../component/ProfileImage";
 import TitleHeader from "../component/TitleHeader";
-import { BACKEND_URL, prod_images } from "../constants/constants";
-import { useAuth } from "../hooks/Auth";
-
-interface Tender {
-  id: number;
-  name: string;
-  state: string;
-  description: string;
-  media: {
-    uri: string;
-    type: string;
-  }[];
-  milestones: {
-    description: string;
-    media: {
-      uri: string;
-      type: string;
-    }[];
-  }[];
-  sme: {
-    id: number;
-    name: string;
-    profile_image_uri: string;
-    phone: string;
-  };
-}
+import { DOCTOR_CRUD } from "../constants/constants";
+import { Doctor, useAuth } from "../hooks/Auth";
 
 export default function SearchDoctor() {
   const auth = useAuth();
-  const [tenders, setTenders] = useState<Tender[]>([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/tender/all`)
+      .get(`${DOCTOR_CRUD}/doctor/all`)
       .then((res) => {
         // console.log(res);
         res.data.reverse();
-        setTenders(res.data);
+        setDoctors(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -51,7 +27,7 @@ export default function SearchDoctor() {
     <div className="main_content">
       <TitleHeader title="Search" role="Doctor"></TitleHeader>
       <div className="right_aligned">
-        <p>Tenders</p>
+        <p>Doctors</p>
         <button className="default small">
           Filters
           <ChevronDown></ChevronDown>
@@ -63,17 +39,16 @@ export default function SearchDoctor() {
           <Search></Search>
         </button>
       </div>
-      <br />
       <div className="cards">
-        {tenders?.map((t, i) => (
-          <Link to={`/tender/${t.id}/bid`} className="no_style">
-            <div className="shg card">
-              <img src={t?.media[0]?.uri} alt="" />
-              <h1>{t.name}</h1>
-              <p>{t.sme.name}</p>
-              <p>{t.description}</p>
+        {doctors?.map((doctor, i) => (
+          <div className="card">
+            <div className="row">
+              <ProfileImage size={40} name={doctor.name} />
+              <h1>{doctor.name}</h1>
             </div>
-          </Link>
+            <p>{doctor.medical_profession}</p>
+            <p>{doctor.phone}</p>
+          </div>
         ))}
       </div>
     </div>
