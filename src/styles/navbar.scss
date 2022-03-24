@@ -69,12 +69,17 @@ nav {
 nav.bottomNav {
   position: fixed;
   bottom: 0;
-  background: #ffffff;
-  box-shadow: 0px -4px 20px rgba(93, 157, 130, 0.15);
+  background: #181c2b;
+  border: 1px solid #252a41;
+  box-shadow: 0px 20px 100px rgb(49 209 129 / 25%);
   border-radius: 2rem 2rem 0px 0px;
   width: calc(100vw - 2rem);
 
   padding: 0rem 1rem;
+
+  svg {
+    color: #937cfc;
+  }
 
   ul {
     margin: 0.5rem 0;
@@ -94,9 +99,13 @@ nav.bottomNav {
     text-decoration: none;
     color: $text;
     &.active {
-      color: $primary;
+      color: #000;
       font-weight: 600;
-      background-color: $background-alt;
+      background-color: $primary;
+
+      svg {
+        color: #000;
+      }
     }
     svg {
       width: 2rem;

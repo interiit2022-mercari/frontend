@@ -1,6 +1,6 @@
 import React, { useContext, createContext, useState } from "react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { BACKEND_URL } from "../constants/constants";
+import { AUTH_SERVICE, BACKEND_URL } from "../constants/constants";
 import { stringify } from "node:querystring";
 
 export type registerForm_Patient = {
@@ -129,7 +129,7 @@ const authConnector = {
   ) {
     authConnector.isAuthenticated = true;
     axios
-      .post(`${BACKEND_URL}/auth/login`, data)
+      .post(`${AUTH_SERVICE}/login`, data)
       .then((response) => {
         // console.log(response);
         cb(response.data);
@@ -222,10 +222,16 @@ function useProvideAuth() {
   ) => {
     return authConnector.login(
       data,
-      (user) => {
+      async (user) => {
         setUser(user);
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("access_token", user.access_token);
+        const { data } = await axios.get(`${AUTH_SERVICE}/details`, {
+          headers: {
+            Authorization: `Bearer ${user.access_token}`,
+          },
+        });
+
+        localStorage.setItem("user", JSON.stringify(data));
+        localStorage.setItem("tokens", JSON.stringify(user));
         cb();
       },
       cbe
