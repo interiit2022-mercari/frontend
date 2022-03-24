@@ -64,7 +64,7 @@ function Register() {
         emergency_phone,
         ...data
       } = state;
-      console.log(data);
+      // console.log(data);
 
       auth?.registerPatient(data, (response: AxiosResponse) => {
         // console.log("registration succex");
@@ -81,7 +81,7 @@ function Register() {
     } else {
       const { NHID, emergency_contact, ...data } = state;
 
-      console.log(data);
+      // console.log(data);
 
       auth?.registerDoctor(data, (response: AxiosResponse) => {
         // console.log("registration succex");

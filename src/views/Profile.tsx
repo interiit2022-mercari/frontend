@@ -6,10 +6,7 @@ import { useAuth } from "../hooks/Auth";
 
 export default function Profile() {
   let history = useHistory();
-
   const auth = useAuth();
-
-  console.log(auth?.user);
 
   return (
     <div className="main_content">

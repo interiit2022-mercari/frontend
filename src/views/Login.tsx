@@ -18,7 +18,7 @@ function Login() {
     data.role = type;
     data.remember = "false";
     setIsLoading(true);
-    console.log("Submitted Form Data: ", data);
+    // console.log("Submitted Form Data: ", data);
 
     auth?.login(
       data,
